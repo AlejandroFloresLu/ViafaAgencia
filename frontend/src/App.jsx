@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './components/auth/Login';
 import ExpenseDashboard from './components/expenses/ExpenseDashboard';
 import UserManagement from './components/admin/UserManagement';
+import AppLayout from './components/layout/AppLayout';
 import './App.css';
 
 const ProtectedRoute = ({ children, minLevel }) => {
@@ -31,7 +32,9 @@ function AppRoutes() {
         path="/dashboard" 
         element={
           <ProtectedRoute minLevel={4}>
-            <ExpenseDashboard />
+            <AppLayout>
+              <ExpenseDashboard />
+            </AppLayout>
           </ProtectedRoute>
         } 
       />
@@ -41,7 +44,9 @@ function AppRoutes() {
         path="/admin/users" 
         element={
           <ProtectedRoute minLevel={1}>
-            <UserManagement />
+            <AppLayout>
+              <UserManagement />
+            </AppLayout>
           </ProtectedRoute>
         } 
       /> 

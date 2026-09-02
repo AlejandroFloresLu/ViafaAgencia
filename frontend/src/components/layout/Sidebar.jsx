@@ -1,6 +1,10 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-export default function Sidebar({ isOpen, setIsOpen, activePage, setActivePage }) {
+export default function Sidebar({ isOpen, setIsOpen }) {
+  const { hasAccess } = useAuth();
+
   return (
     <>
       {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)}></div>}
@@ -14,28 +18,31 @@ export default function Sidebar({ isOpen, setIsOpen, activePage, setActivePage }
           <div className="nav-group">
             <h3>MIS TARJETAS</h3>
             <ul>
-              <li className={activePage === 'cards' ? 'active' : ''} onClick={() => { setActivePage('cards'); setIsOpen(false); }}>Gestión de Tarjetas</li>
-              <li className={activePage === 'balances' ? 'active' : ''} onClick={() => { setActivePage('balances'); setIsOpen(false); }}>Resumen de Saldos</li>
+              {/* Solo dejamos la que sí existe conectada por ahora (dashboard de gastos) */}
+              <li><NavLink to="/dashboard" onClick={() => setIsOpen(false)}>Registro de Operaciones</NavLink></li>
             </ul>
           </div>
 
-          <div className="nav-group">
-            <h3>OPERACIONES</h3>
-            <ul>
-              <li className={activePage === 'expenses' ? 'active' : ''} onClick={() => { setActivePage('expenses'); setIsOpen(false); }}>Registro de Operaciones</li>
-            </ul>
-          </div>
+          {/* Menú exclusivo para el Administrador (Nivel 1) */}
+          {hasAccess(1) && (
+            <div className="nav-group">
+              <h3>ADMINISTRACIÓN</h3>
+              <ul>
+                <li><NavLink to="/admin/users" onClick={() => setIsOpen(false)}>Gestión de Usuarios</NavLink></li>
+              </ul>
+            </div>
+          )}
 
           <div className="nav-group">
             <h3>PREFERENCIAS</h3>
             <ul>
-              <li className={activePage === 'settings' ? 'active' : ''} onClick={() => { setActivePage('settings'); setIsOpen(false); }}>Ajustes</li>
+              <li><NavLink to="/settings" onClick={() => setIsOpen(false)}>Ajustes</NavLink></li>
             </ul>
           </div>
         </nav>
 
         <div className="sidebar-footer">
-          <p>Modo Simulación Activo</p>
+          <p>Modo Online Activo</p>
         </div>
       </aside>
     </>

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-export default function Topbar({ toggleSidebar, userRole, setUserRole }) {
+export default function Topbar({ toggleSidebar }) {
   const [isLightMode, setIsLightMode] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   // Cargar preferencia de tema al iniciar
   useEffect(() => {
@@ -24,6 +28,11 @@ export default function Topbar({ toggleSidebar, userRole, setUserRole }) {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="topbar">
       <div className="topbar-left flex items-center">
@@ -44,18 +53,19 @@ export default function Topbar({ toggleSidebar, userRole, setUserRole }) {
         </button>
         
         <div className="user-profile">
-          <div className="avatar">AL</div>
+          <div className="avatar">{user?.nombre?.substring(0, 2).toUpperCase() || 'AD'}</div>
           <div className="user-info">
-            <span className="name" style={{ color: 'var(--text-color)' }}>Alejandro</span>
-            <span 
-              className="role" 
-              style={{ cursor: 'pointer', textDecoration: 'underline', color: 'var(--btn-primary)' }}
-              onClick={() => setUserRole(userRole === 'Gerente' ? 'Auxiliar' : 'Gerente')}
-              title="Clic para cambiar de rol"
-            >
-              Rol: {userRole}
+            <span className="name" style={{ color: 'var(--text-color)' }}>{user?.nombre || 'Cargando...'}</span>
+            <span className="role" style={{ color: 'var(--text-muted)' }}>
+              Nivel: {user?.rol_nivel}
             </span>
           </div>
+          <button 
+            onClick={handleLogout} 
+            style={{ marginLeft: '10px', background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+          >
+            Salir
+          </button>
         </div>
       </div>
     </header>
