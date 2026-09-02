@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardForm from './CardForm';
 import CardPreview from './CardPreview';
 import CardList from './CardList';
 import ConfirmModal from '../common/ConfirmModal';
 import TransactionHistory from './TransactionHistory';
+import apiClient from '../../api/apiClient';
 import './Cards.css';
 
-export default function CardDashboard({ cards, setCards, transactions, setTransactions, userRole, onEditTx }) {
+export default function CardDashboard() {
+  const [cards, setCards] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [currentView, setCurrentView] = useState('list'); // 'list' | 'form'
   const [selectedCard, setSelectedCard] = useState(null);
   
@@ -17,6 +22,25 @@ export default function CardDashboard({ cards, setCards, transactions, setTransa
   // States para Historial
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyCardId, setHistoryCardId] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [cardsRes, txsRes] = await Promise.all([
+        apiClient('/cards'),
+        apiClient('/transactions')
+      ]);
+      setCards(cardsRes.data || cardsRes || []);
+      setTransactions(txsRes.data || txsRes || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // ---------- LOGICA DE TARJETAS ----------
   const handleAddNew = () => {

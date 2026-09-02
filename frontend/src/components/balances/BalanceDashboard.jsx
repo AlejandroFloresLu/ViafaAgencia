@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import apiClient from '../../api/apiClient';
 import './Balances.css';
 
-export default function BalanceDashboard({ cards }) {
+export default function BalanceDashboard() {
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalCupo = cards.reduce((sum, card) => sum + (card.cupo_maximo || 0), 0);
-  const totalUsado = cards.reduce((sum, card) => sum + (card.saldo_usado || 0), 0);
-  const totalDisponible = cards.reduce((sum, card) => sum + (card.saldo_disponible || 0), 0);
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const fetchCards = async () => {
+    try {
+      const cardsRes = await apiClient('/cards');
+      const safeCards = Array.isArray(cardsRes) ? cardsRes : (cardsRes?.data || []);
+      setCards(safeCards);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalCupo = cards.reduce((sum, card) => sum + (Number(card.tar_cupo_maximo) || 0), 0);
+  const totalUsado = cards.reduce((sum, card) => sum + (Number(card.tar_saldo_usado) || 0), 0);
+  const totalDisponible = cards.reduce((sum, card) => sum + (Number(card.tar_saldo_disponible) || 0), 0);
 
   // Heurística de colores (Niveles de Alerta sin saturar)
   const getProgressColor = (usado, cupo) => {
@@ -15,6 +34,8 @@ export default function BalanceDashboard({ cards }) {
     if (pct >= 50) return '#f59e0b'; // Naranja/Amarillo (Precaución)
     return 'var(--primary)'; // Azul (Todo OK)
   };
+
+  if (loading) return <div className="container" style={{ padding: '2rem' }}>Cargando saldos...</div>;
 
   return (
     <div className="dashboard balance-dashboard">
@@ -41,18 +62,18 @@ export default function BalanceDashboard({ cards }) {
         <h3>Desglose por Tarjeta</h3>
         <div className="balance-list">
           {cards.map(card => {
-            const cupo = card.cupo_maximo || 0;
-            const usado = card.saldo_usado || 0;
+            const cupo = Number(card.tar_cupo_maximo) || 0;
+            const usado = Number(card.tar_saldo_usado) || 0;
             const pct = cupo ? ((usado / cupo) * 100).toFixed(1) : 0;
             const barColor = getProgressColor(usado, cupo);
             
             return (
-              <div key={card.id} className="balance-item">
+              <div key={card.tar_id} className="balance-item">
                 <div className="balance-header flex justify-between items-center">
                   <div className="balance-title">
-                    <span className="brand">{card.franquicia || 'Visa'}</span>
-                    <span className="number">**** {card.numero?.slice(-4) || card.ultimos_digitos || '0000'}</span>
-                    {card.alias && <span className="alias">({card.alias})</span>}
+                    <span className="brand">{card.tar_franquicia || 'Visa'}</span>
+                    <span className="number">**** {card.tar_ultimos_digitos || '0000'}</span>
+                    {card.tar_alias && <span className="alias">({card.tar_alias})</span>}
                   </div>
                   <div className="balance-amounts">
                     <span className="used">${usado.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
@@ -69,7 +90,7 @@ export default function BalanceDashboard({ cards }) {
                   <span className="pct-text" style={{ color: pct >= 90 ? 'var(--danger)' : 'var(--text-muted)' }}>
                     {pct}% Utilizado
                   </span>
-                  <span className="avail-text">Disponible: ${(card.saldo_disponible || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                  <span className="avail-text">Disponible: ${(Number(card.tar_saldo_disponible) || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                 </div>
               </div>
             );

@@ -32,24 +32,24 @@ export default function CardList({ cards, onAddNew, onEdit, onDelete, onViewHist
       
       <div className="cards-grid" style={{ padding: '0 20px' }}>
         {cards.map(card => (
-          <div key={card.id} className="card-grid-item">
+          <div key={card.tar_id} className="card-grid-item">
             <div className="card-grid-header flex justify-between items-center">
-              <span className="brand">{card.franquicia || 'Visa'}</span>
+              <span className="brand">{card.tar_franquicia || 'Visa'}</span>
 
             </div>
             
             <div className="card-grid-number">
-              **** **** **** {card.ultimos_digitos || card.numero?.slice(-4) || '0000'}
+              **** **** **** {card.tar_ultimos_digitos || card.numero?.slice(-4) || '0000'}
             </div>
             
             <div className="card-grid-details flex justify-between">
               <div className="flex-col">
                 <span className="label">Alias</span>
-                <span className="value">{card.alias || 'Sin Alias'}</span>
+                <span className="value">{card.tar_alias || 'Sin Alias'}</span>
               </div>
               <div className="flex-col" style={{ textAlign: 'right' }}>
                 <span className="label">Expira</span>
-                <span className="value">{card.fecha_expiracion || 'MM/YY'}</span>
+                <span className="value">{card.tar_fecha_expiracion || 'MM/YY'}</span>
               </div>
             </div>
 
