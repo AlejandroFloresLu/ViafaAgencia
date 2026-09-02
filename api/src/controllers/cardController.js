@@ -4,7 +4,7 @@ const { detectFranchise } = require('../utils/cardUtils');
 exports.getCards = async (req, res) => {
   try {
     const userId = req.user?.id || '00000000-0000-0000-0000-000000000000';
-    const cards = await CardModel.getCardsByUserId(userId);
+    const { data: cards } = await CardModel.getCards(1, 100, { usu_id: userId });
     res.json(cards);
   } catch (error) {
     res.status(500).json({ error: error.message });
