@@ -40,12 +40,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </div>
           )}
 
+          {/* Oculto temporalmente a petición del usuario
           <div className="nav-group">
             <h3>PREFERENCIAS</h3>
             <ul>
               <li><NavLink to="/settings" onClick={() => setIsOpen(false)}>Ajustes</NavLink></li>
             </ul>
           </div>
+          */}
         </nav>
 
         <div className="sidebar-footer">
