@@ -19,10 +19,12 @@ const UserManagement = () => {
         apiClient('/users'),
         apiClient('/roles')
       ]);
-      setUsers(usersData);
-      setRoles(rolesData);
-      if (rolesData.length > 0) {
-        setFormData(prev => ({ ...prev, rol_id: rolesData[0].rol_id }));
+      const safeUsers = Array.isArray(usersData) ? usersData : (usersData?.data || []);
+      const safeRoles = Array.isArray(rolesData) ? rolesData : (rolesData?.data || []);
+      setUsers(safeUsers);
+      setRoles(safeRoles);
+      if (safeRoles.length > 0) {
+        setFormData(prev => ({ ...prev, rol_id: safeRoles[0].rol_id }));
       }
     } catch (err) {
       console.error(err);
