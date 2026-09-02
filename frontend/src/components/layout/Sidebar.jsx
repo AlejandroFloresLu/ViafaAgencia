@@ -18,8 +18,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <div className="nav-group">
             <h3>MIS TARJETAS</h3>
             <ul>
-              {/* Solo dejamos la que sí existe conectada por ahora (dashboard de gastos) */}
-              <li><NavLink to="/dashboard" onClick={() => setIsOpen(false)}>Registro de Operaciones</NavLink></li>
+              <li><NavLink to="/cards" onClick={() => setIsOpen(false)}>Gestión de Tarjetas</NavLink></li>
+              <li><NavLink to="/balances" onClick={() => setIsOpen(false)}>Resumen de Saldos</NavLink></li>
+            </ul>
+          </div>
+
+          <div className="nav-group">
+            <h3>OPERACIONES</h3>
+            <ul>
+              <li><NavLink to="/expenses" onClick={() => setIsOpen(false)}>Registro de Operaciones</NavLink></li>
             </ul>
           </div>
 

@@ -7,6 +7,10 @@ import UserManagement from './components/admin/UserManagement';
 import AppLayout from './components/layout/AppLayout';
 import './App.css';
 
+import CardDashboard from './components/cards/CardDashboard';
+import BalanceDashboard from './components/balances/BalanceDashboard';
+import SettingsDashboard from './components/settings/SettingsDashboard';
+
 const ProtectedRoute = ({ children, minLevel }) => {
   const { user, loading, hasAccess } = useAuth();
   
@@ -30,10 +34,48 @@ function AppRoutes() {
       {/* Rutas protegidas genéricas (Lectores o más) */}
       <Route 
         path="/dashboard" 
+        element={<Navigate to="/expenses" replace />} 
+      />
+
+      <Route 
+        path="/expenses" 
         element={
           <ProtectedRoute minLevel={4}>
             <AppLayout>
               <ExpenseDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/cards" 
+        element={
+          <ProtectedRoute minLevel={4}>
+            <AppLayout>
+              <CardDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/balances" 
+        element={
+          <ProtectedRoute minLevel={4}>
+            <AppLayout>
+              <BalanceDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/settings" 
+        element={
+          <ProtectedRoute minLevel={4}>
+            <AppLayout>
+              <SettingsDashboard />
             </AppLayout>
           </ProtectedRoute>
         } 
