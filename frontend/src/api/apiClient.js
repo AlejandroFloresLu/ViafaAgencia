@@ -1,7 +1,7 @@
 // apiClient.js
 // Wrapper nativo con 'fetch' para inyectar automáticamente el JWT en todas las peticiones.
 
-const BASE_URL = 'https://viafaagencia.onrender.com';
+const BASE_URL = 'https://viafaagencia.onrender.com/api';
 
 const apiClient = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
