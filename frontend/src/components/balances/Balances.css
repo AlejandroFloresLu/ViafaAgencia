@@ -1,0 +1,141 @@
+.balance-dashboard {
+  padding: 0 20px 2rem 20px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  padding: 0 20px;
+}
+
+.kpi-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.kpi-value {
+  font-size: 2.4rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -1px;
+}
+
+.kpi-value.available {
+  color: #10b981; /* Verde esmeralda para saldo positivo/liquidez */
+}
+
+.balance-breakdown {
+  padding: 0 20px;
+}
+
+.balance-breakdown h3 {
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.balance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.balance-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+}
+
+.balance-header {
+  margin-bottom: 1rem;
+}
+
+.balance-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.balance-title .brand {
+  font-weight: 700;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+.balance-title .number {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.balance-title .alias {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.balance-amounts {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+}
+
+.balance-amounts .used {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.balance-amounts .separator {
+  color: var(--glass-border);
+  margin: 0 8px;
+}
+
+.balance-amounts .total {
+  color: var(--text-muted);
+}
+
+.progress-track {
+  height: 10px;
+  background: var(--input-bg);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-stats {
+  font-size: 0.85rem;
+}
+
+.progress-stats .avail-text {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}

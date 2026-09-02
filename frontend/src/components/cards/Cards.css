@@ -1,0 +1,282 @@
+.dashboard {
+  padding: 0 20px 1.5rem 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+/* Lado izquierdo (Formulario) */
+.card-form-container {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+}
+
+.card-form-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Checkbox Premium */
+input[type="checkbox"] {
+  appearance: none;
+  background-color: var(--input-bg);
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.25em;
+  height: 1.25em;
+  border: 1px solid var(--input-border);
+  border-radius: 0.25em;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+  background-color: white;
+  transform-origin: center;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+/* Lado derecho (Preview y Botones) */
+.grid-right {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  perspective: 1000px;
+}
+
+.card-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.credit-card-visual {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1.586 / 1;
+  background: var(--gradient-card);
+  border-radius: 20px;
+  color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 
+    0 20px 40px -10px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.credit-card-visual:hover {
+  transform: translateY(-5px) rotateX(5deg) rotateY(-5deg);
+}
+
+/* Efecto de reflejo (Glare) en la tarjeta */
+.credit-card-visual::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%);
+  pointer-events: none;
+}
+
+.card-top {
+  position: relative;
+  z-index: 2;
+}
+
+.chip-icon {
+  width: 45px;
+  height: 35px;
+  background: linear-gradient(135deg, #e5b225 0%, #d4af37 100%);
+  border-radius: 6px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.chip-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 0; right: 0;
+  height: 1px; background: rgba(0,0,0,0.2);
+}
+.chip-icon::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px; background: rgba(0,0,0,0.2);
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.card-middle {
+  position: relative;
+  z-index: 2;
+  margin: auto 0;
+}
+
+.card-number {
+  font-size: 1.7rem;
+  letter-spacing: 3px;
+  font-family: var(--font-mono);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.card-bottom {
+  position: relative;
+  z-index: 2;
+}
+
+.card-bottom .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+.card-bottom .value {
+  font-size: 1rem;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.action-buttons {
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .grid-right {
+    flex-direction: column-reverse;
+  }
+}
+
+/* Card Grid Styles */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.card-grid-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-grid-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.card-grid-header .brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.badge-default {
+  background: var(--primary);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-grid-number {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+}
+
+.card-grid-details .label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.card-grid-details .value {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.card-grid-actions {
+  margin-top: auto;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.btn-icon:hover {
+  background: var(--glass-bg);
+}
+
+.danger-icon:hover {
+  color: var(--danger);
+}

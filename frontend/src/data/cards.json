@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "cliente_id": "cli_001",
+    "alias": "Compras Diarias",
+    "es_predeterminada": true,
+    "nombre_en_tarjeta": "JUAN PEREZ",
+    "numero": "4532 1234 9010 9010",
+    "ultimos_digitos": "9010",
+    "fecha_expiracion": "12/28",
+    "cvv": "123",
+    "franquicia": "Visa",
+    "saldo_disponible": 1250.50,
+    "cupo_total": 2000.00,
+    "permite_diferir": true
+  },
+  {
+    "id": "2",
+    "cliente_id": "cli_002",
+    "alias": "Tarjeta Emergencias",
+    "es_predeterminada": false,
+    "nombre_en_tarjeta": "ANA M GOMEZ",
+    "numero": "5123 4567 8901 1098",
+    "ultimos_digitos": "1098",
+    "fecha_expiracion": "08/27",
+    "cvv": "456",
+    "franquicia": "MasterCard",
+    "saldo_disponible": -350.75,
+    "cupo_total": 1000.00,
+    "permite_diferir": false
+  },
+  {
+    "id": "3",
+    "cliente_id": "cli_003",
+    "alias": "Viajes y Negocios",
+    "es_predeterminada": false,
+    "nombre_en_tarjeta": "JUAN PEREZ",
+    "numero": "3777 1234 5678 9012",
+    "ultimos_digitos": "9012",
+    "fecha_expiracion": "11/29",
+    "cvv": "789",
+    "franquicia": "Amex",
+    "saldo_disponible": 0.00,
+    "cupo_total": 5000.00,
+    "permite_diferir": true
+  }
+]
