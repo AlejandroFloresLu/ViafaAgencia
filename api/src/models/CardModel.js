@@ -52,7 +52,7 @@ class CardModel {
     // Borrado lógico de tarjeta
     const { data, error } = await supabase
       .from('tarjetas')
-      .update({ tar_estado: 'INA' })
+      .update({ tar_estado: 'DEC' })
       .eq('tar_id', cardId)
       .select()
       .single();
