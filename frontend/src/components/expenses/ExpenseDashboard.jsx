@@ -170,7 +170,7 @@ export default function ExpenseDashboard() {
         <div className="expenses-left">
           <h3 style={{ borderBottom: 'none', marginBottom: '1rem' }}>Cartera de Tarjetas</h3>
           
-          <div style={{ position: 'relative', width: '100%', maxWidth: '400px', marginBottom: '1rem' }}>
+          <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
             <span style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.1rem' }}>🔍</span>
             <input 
               type="text" 
