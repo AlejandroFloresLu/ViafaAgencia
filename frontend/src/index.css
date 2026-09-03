@@ -304,7 +304,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.9rem; 
 }
 
-/* Print Styles */
+/* Estilos de impresión (Estados de Cuenta) */
+.printable-statement {
+  display: none;
+}
+
 @media print {
   .no-print {
     display: none !important;
@@ -330,8 +334,11 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .printable-statement {
+    display: block !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    background: white !important;
+    color: black !important;
   }
 }
