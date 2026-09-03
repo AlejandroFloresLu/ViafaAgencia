@@ -241,3 +241,107 @@
   font-size: 1.2rem;
   color: var(--danger);
 }
+
+/* Rediseño de Formulario - UI Rápida */
+.type-toggle-group {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--glass-border);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.type-btn.active-gasto {
+  background: white;
+  color: #ef4444;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.type-btn.active-ingreso {
+  background: white;
+  color: #10b981;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.amount-group {
+  position: relative;
+  margin: 1.5rem 0;
+  background: var(--glass-bg);
+  border: 2px dashed var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.amount-group .currency-symbol {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  position: absolute;
+  left: 2rem;
+}
+
+.amount-input-massive {
+  width: 100%;
+  font-size: 3.5rem !important;
+  font-weight: 800 !important;
+  text-align: center;
+  background: transparent;
+  border: none !important;
+  color: var(--text-color);
+  outline: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.amount-input-massive:focus {
+  box-shadow: none !important;
+}
+
+.amount-input-massive::placeholder {
+  color: rgba(0,0,0,0.2);
+}
+
+.pill-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pill-btn:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.pill-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn-massive {
+  padding: 1.25rem !important;
+  font-size: 1.2rem !important;
+  font-weight: bold !important;
+  border-radius: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+

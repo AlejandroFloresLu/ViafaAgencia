@@ -267,7 +267,6 @@ export default function ExpenseDashboard() {
           </div>
         </div>
 
-        {/* Formulario */}
         <div className="expenses-right" style={{ 
           opacity: selectedCardId ? 1 : 0.4, 
           filter: selectedCardId ? 'none' : 'grayscale(80%)',
@@ -286,52 +285,40 @@ export default function ExpenseDashboard() {
           <div className="expense-form-container">
             {error && <div className="alert error-alert">{error}</div>}
             
-            <div className="form-row flex justify-between" style={{ gap: '1.5rem', marginBottom: '1rem' }}>
-              {/* Ocultar selector de Ingreso/Gasto para Auxiliares */}
-              {!(isAuxiliar && isAuxiliar()) && (
-                <div className="form-group flex-1">
-                  <label>Tipo de Operación</label>
-                  <select 
-                    className="form-control"
-                    value={tipoOperacion}
-                    onChange={(e) => {
-                      setTipoOperacion(e.target.value);
-                      if (e.target.value === 'ingreso') setDiferido(false);
-                    }}
-                  >
-                    <option value="gasto">Gasto (Cargo)</option>
-                    <option value="ingreso">Ingreso (Abono/Pago)</option>
-                  </select>
-                </div>
-              )}
-              <div className="form-group flex-1">
-                <label>Monto Total ($)</label>
-                <input 
-                  type="number" 
-                  className="form-control amount-input"
-                  style={{
-                    borderColor: (!hasEnoughBalance && montoNum > 0) ? '#f59e0b' : '',
-                    color: (!hasEnoughBalance && montoNum > 0) ? '#f59e0b' : ''
-                  }}
-                  placeholder="0.00" 
-                  value={monto} 
-                  onChange={(e) => setMonto(e.target.value)} 
-                  min="0" step="0.01"
-                />
+            {/* TIPO DE OPERACION (Botones tipo Toggle) */}
+            {!(isAuxiliar && isAuxiliar()) && (
+              <div className="type-toggle-group mb-2">
+                <button 
+                  className={`type-btn ${tipoOperacion === 'gasto' ? 'active-gasto' : ''}`}
+                  onClick={() => setTipoOperacion('gasto')}
+                >
+                  🔴 Gasto / Cargo
+                </button>
+                <button 
+                  className={`type-btn ${tipoOperacion === 'ingreso' ? 'active-ingreso' : ''}`}
+                  onClick={() => { setTipoOperacion('ingreso'); setDiferido(false); }}
+                >
+                  🟢 Ingreso / Abono
+                </button>
               </div>
-              <div className="form-group flex-1">
-                 <label>Fecha de la Transacción</label>
-                 <input 
-                   type="date" 
-                   className="form-control" 
-                   value={fecha} 
-                   onChange={(e) => setFecha(e.target.value)} 
-                 />
-              </div>
+            )}
+
+            {/* MONTO GIGANTE */}
+            <div className="amount-group">
+              <span className="currency-symbol">$</span>
+              <input 
+                type="number" 
+                className="form-control amount-input-massive" 
+                placeholder="0.00" 
+                value={monto} 
+                onChange={(e) => setMonto(e.target.value)} 
+                min="0" step="0.01"
+              />
             </div>
 
-            <div className="form-row flex justify-between">
-              <div className="form-group flex-1">
+            {/* CONCEPTO Y FECHA */}
+            <div className="form-row flex justify-between" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
+              <div className="form-group flex-1" style={{ flex: 2 }}>
                  <label>Concepto / Detalle</label>
                  <input 
                    type="text" 
@@ -341,58 +328,55 @@ export default function ExpenseDashboard() {
                    onChange={(e) => setDetalle(e.target.value)} 
                  />
               </div>
+              <div className="form-group flex-1" style={{ flex: 1 }}>
+                 <label>Fecha</label>
+                 <input 
+                   type="date" 
+                   className="form-control" 
+                   value={fecha} 
+                   onChange={(e) => setFecha(e.target.value)} 
+                 />
+              </div>
             </div>
 
-            {/* Ocultar Diferir pago si es un ingreso (pago de tarjeta) */}
-            {tipoOperacion === 'gasto' && (
-              <div className="form-group checkbox-group flex items-center">
-                <input 
-                  type="checkbox" 
-                  id="diferido" 
-                  checked={diferido && selectedCard?.permite_diferir} 
-                  onChange={(e) => setDiferido(e.target.checked)} 
-                  disabled={!selectedCard?.permite_diferir}
-                />
-                <label htmlFor="diferido" style={{ margin: 0, marginLeft: '8px', cursor: !selectedCard?.permite_diferir ? 'not-allowed' : 'pointer', color: !selectedCard?.permite_diferir ? 'var(--text-muted)' : 'var(--text-color)' }}>
-                  Diferir pago (Cuotas)
-                </label>
-                {!selectedCard?.permite_diferir && (
-                  <span style={{ marginLeft: '10px', fontSize: '0.8rem', color: '#f59e0b' }}>(Solo corriente)</span>
+            {/* OPCIONES DE PAGO DIFERIDO */}
+            {tipoOperacion === 'gasto' && selectedCard?.permite_diferir && (
+              <div className="payment-mode-group" style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Modalidad de Pago</label>
+                <div className="flex" style={{ gap: '0.5rem', marginBottom: diferido ? '1rem' : '0' }}>
+                   <button className={`pill-btn ${!diferido ? 'active' : ''}`} onClick={() => setDiferido(false)}>Corriente</button>
+                   <button className={`pill-btn ${diferido ? 'active' : ''}`} onClick={() => setDiferido(true)}>Diferido</button>
+                </div>
+                
+                {diferido && (
+                   <div className="months-selector flex items-center" style={{ gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem', background: 'rgba(0,0,0,0.03)', padding: '1rem', borderRadius: '8px' }}>
+                      {[3, 6, 9, 12, 24].map(m => (
+                        <button key={m} className={`pill-btn ${meses === m ? 'active' : ''}`} onClick={() => setMeses(m)} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
+                          {m} meses
+                        </button>
+                      ))}
+                      <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block' }}>Cuota mensual</span>
+                        <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: 'var(--primary)' }}>${cuota}</span>
+                      </div>
+                   </div>
                 )}
               </div>
             )}
 
-            {diferido && (
-              <div className="deferred-options flex items-center justify-between">
-                <div className="form-group flex-1" style={{ marginBottom: 0 }}>
-                  <label>Meses a Diferir</label>
-                  <select className="form-control" value={meses} onChange={(e) => setMeses(Number(e.target.value))}>
-                    <option value={3}>3 meses</option>
-                    <option value={6}>6 meses</option>
-                    <option value={9}>9 meses</option>
-                    <option value={12}>12 meses</option>
-                    <option value={24}>24 meses</option>
-                  </select>
-                </div>
-                <div className="quota-preview flex-1 text-right">
-                  <span className="quota-label">Cuota mensual:</span>
-                  <span className="quota-amount">${cuota}</span>
-                </div>
-              </div>
-            )}
-
-            <div className="action-buttons flex justify-between items-center" style={{ marginTop: '2rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
-               <div className="validation-status">
-                 {selectedCard && montoNum > 0 && !hasEnoughBalance && !txToEdit && (
-                   <span style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: '0.9rem' }}>
-                     ⚠️ Operación requiere sobregiro de ${(montoNum - (selectedCard.tar_cupo_maximo - (selectedCard.tar_saldo_usado || 0))).toLocaleString('en-US', {minimumFractionDigits:2})}
-                   </span>
-                 )}
-               </div>
-               <button className="btn btn-primary" onClick={handleSave} disabled={montoNum <= 0}>
-                 {txToEdit ? 'Guardar Cambios' : 'Registrar Operación'}
-               </button>
+            {/* ADVERTENCIA DE SOBREGIRO */}
+            <div className="validation-status" style={{ minHeight: '24px', marginBottom: '1rem', textAlign: 'center' }}>
+              {selectedCard && montoNum > 0 && !hasEnoughBalance && !txToEdit && (
+                <span style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '0.9rem', background: 'rgba(239, 68, 68, 0.1)', padding: '8px 12px', borderRadius: '8px', display: 'inline-block' }}>
+                  ⚠️ Esta operación requiere un sobregiro de ${(montoNum - (selectedCard.tar_cupo_maximo - (selectedCard.tar_saldo_usado || 0))).toLocaleString('en-US', {minimumFractionDigits:2})}
+                </span>
+              )}
             </div>
+
+            {/* BOTÓN PRINCIPAL (MASIVO) */}
+            <button className="btn btn-primary btn-massive w-full" style={{ width: '100%' }} onClick={handleSave} disabled={montoNum <= 0}>
+              {txToEdit ? '💾 Guardar Cambios' : '🚀 Registrar Operación'}
+            </button>
           </div>
         </div>
       </div>
