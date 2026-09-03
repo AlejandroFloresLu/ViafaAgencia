@@ -58,25 +58,26 @@ export default function CardForm({ cardData, setCardData, handleSave, handleCanc
     <div className="card-form-container">
       <h2>Datos de la Tarjeta</h2>
       <form onSubmit={e => e.preventDefault()} autoComplete="off">
-        <div className="form-group">
-          <label>Número de Tarjeta</label>
-          <input 
-            type="text" 
-            name="numero" 
-            className="form-control" 
-            placeholder={cardData.tar_id ? `Termina en ${cardData.tar_ultimos_digitos || '****'}` : "**** **** **** ****"}
-            value={cardData.numero || ''} 
-            onChange={handleChange} 
-            maxLength={19}
-            autoComplete="new-password"
-            spellCheck="false"
-            data-lpignore="true"
-            disabled={!!cardData.tar_id}
-          />
-        </div>
+        {!cardData.tar_id && (
+          <div className="form-group">
+            <label>Número de Tarjeta</label>
+            <input 
+              type="text" 
+              name="numero" 
+              className="form-control" 
+              placeholder="**** **** **** ****"
+              value={cardData.numero || ''} 
+              onChange={handleChange} 
+              maxLength={19}
+              autoComplete="new-password"
+              spellCheck="false"
+              data-lpignore="true"
+            />
+          </div>
+        )}
         
         <div className="form-group">
-          <label>Dueño de la Tarjeta</label>
+          <label>Dueño de la Tarjeta (Nombre)</label>
           <input 
             type="text" 
             name="nombre_en_tarjeta" 
@@ -125,21 +126,23 @@ export default function CardForm({ cardData, setCardData, handleSave, handleCanc
         )}
 
         <div className="flex justify-between" style={{ gap: '1.5rem' }}>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Fecha de Caducidad</label>
-            <input 
-              type="text" 
-              name="fecha_expiracion" 
-              className="form-control" 
-              placeholder="MM/YY"
-              value={cardData.fecha_expiracion || ''} 
-              onChange={handleChange} 
-              maxLength={5}
-              autoComplete="new-password"
-              spellCheck="false"
-              data-lpignore="true"
-            />
-          </div>
+          {!cardData.tar_id && (
+            <div className="form-group" style={{ flex: 1 }}>
+              <label>Fecha de Caducidad</label>
+              <input 
+                type="text" 
+                name="fecha_expiracion" 
+                className="form-control" 
+                placeholder="MM/YY"
+                value={cardData.fecha_expiracion || ''} 
+                onChange={handleChange} 
+                maxLength={5}
+                autoComplete="new-password"
+                spellCheck="false"
+                data-lpignore="true"
+              />
+            </div>
+          )}
           <div className="form-group" style={{ flex: 1 }}>
             <label>Cupo Máximo ($)</label>
             <input 
