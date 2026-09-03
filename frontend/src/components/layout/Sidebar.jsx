@@ -19,7 +19,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <h3>MIS TARJETAS</h3>
             <ul>
               <li><NavLink to="/cards" onClick={() => setIsOpen(false)}>Gestión de Tarjetas</NavLink></li>
-              <li><NavLink to="/balances" onClick={() => setIsOpen(false)}>Resumen de Saldos</NavLink></li>
+              <li><NavLink to="/reports" onClick={() => setIsOpen(false)}>Estados de Cuenta</NavLink></li>
             </ul>
           </div>
 
@@ -27,7 +27,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <h3>OPERACIONES</h3>
             <ul>
               <li><NavLink to="/expenses" onClick={() => setIsOpen(false)}>Registro de Operaciones</NavLink></li>
-              <li><NavLink to="/reports" onClick={() => setIsOpen(false)}>Estado de Cuenta (Reportes)</NavLink></li>
             </ul>
           </div>
 

@@ -8,7 +8,6 @@ import AppLayout from './components/layout/AppLayout';
 import './App.css';
 
 import CardDashboard from './components/cards/CardDashboard';
-import BalanceDashboard from './components/balances/BalanceDashboard';
 import SettingsDashboard from './components/settings/SettingsDashboard';
 import ReportDashboard from './components/reports/ReportDashboard';
 
@@ -55,17 +54,6 @@ function AppRoutes() {
           <ProtectedRoute minLevel={4}>
             <AppLayout>
               <CardDashboard />
-            </AppLayout>
-          </ProtectedRoute>
-        } 
-      />
-
-      <Route 
-        path="/balances" 
-        element={
-          <ProtectedRoute minLevel={4}>
-            <AppLayout>
-              <BalanceDashboard />
             </AppLayout>
           </ProtectedRoute>
         } 
