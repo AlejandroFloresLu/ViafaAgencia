@@ -303,3 +303,35 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.5rem; 
   font-size: 0.9rem; 
 }
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .sidebar, .topbar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: white !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .printable-statement {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
