@@ -3,16 +3,10 @@
 }
 
 .expenses-grid {
-  display: grid;
-  grid-template-columns: 350px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 2.5rem;
   padding: 0 20px;
-}
-
-@media (max-width: 900px) {
-  .expenses-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .expenses-left h3, .expenses-right h3, .recent-transactions h3 {
@@ -25,9 +19,9 @@
 
 /* Selector de Tarjetas */
 .card-selector-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
 }
 
 .card-selector-item {
