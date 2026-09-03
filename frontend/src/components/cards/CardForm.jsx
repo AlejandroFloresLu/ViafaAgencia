@@ -105,22 +105,6 @@ export default function CardForm({ cardData, setCardData, handleSave, handleCanc
               <option value="Prepago" style={{ color: '#000' }}>Prepago</option>
             </select>
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Marca de la Tarjeta</label>
-            <select 
-              name="marca_tarjeta" 
-              className="form-control" 
-              value={cardData.marca_tarjeta || ''} 
-              onChange={handleChange}
-              style={{ backgroundColor: 'var(--bg-secondary, transparent)', color: 'inherit' }}
-            >
-              <option value="" disabled>Selecciona la marca</option>
-              <option value="Visa" style={{ color: '#000' }}>Visa</option>
-              <option value="Mastercard" style={{ color: '#000' }}>Mastercard</option>
-              <option value="Amex" style={{ color: '#000' }}>American Express</option>
-              <option value="Otra" style={{ color: '#000' }}>Otra</option>
-            </select>
-          </div>
         </div>
 
         {cardData.tipo_tarjeta === 'Credito' && (
