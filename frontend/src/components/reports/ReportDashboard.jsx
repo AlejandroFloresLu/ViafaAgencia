@@ -226,6 +226,7 @@ export default function ReportDashboard() {
                 <thead>
                   <tr style={{ background: '#f1f1f1', borderBottom: '2px solid #ccc' }}>
                     <th style={{ padding: '10px' }}>FECHA</th>
+                    <th style={{ padding: '10px' }}>USUARIO</th>
                     <th style={{ padding: '10px' }}>CONCEPTO / DETALLE</th>
                     <th style={{ padding: '10px' }}>TIPO</th>
                     <th style={{ padding: '10px', textAlign: 'right' }}>VALOR</th>
@@ -238,6 +239,7 @@ export default function ReportDashboard() {
                     return (
                       <tr key={tx.tra_id || tx.id} style={{ borderBottom: '1px solid #eee' }}>
                         <td style={{ padding: '10px' }}>{new Date(tx.tra_fecha || tx.fecha || tx.tra_created_at).toLocaleDateString()}</td>
+                        <td style={{ padding: '10px' }}>{tx.usuarios?.usu_nombre || 'Desconocido'}</td>
                         <td style={{ padding: '10px' }}>{tx.tra_detalle || tx.detalle} {tx.tra_es_diferido ? `(Dif. ${tx.tra_meses} meses)` : ''}</td>
                         <td style={{ padding: '10px' }}>{isIngreso ? 'ABONO/PAGO' : 'CARGO/GASTO'}</td>
                         <td style={{ padding: '10px', textAlign: 'right', fontWeight: 'bold', color: isIngreso ? '#10b981' : '#ef4444' }}>
@@ -292,6 +294,7 @@ export default function ReportDashboard() {
                   <tr style={{ background: '#f1f1f1', borderBottom: '2px solid #ccc' }}>
                     <th style={{ padding: '10px' }}>FECHA</th>
                     <th style={{ padding: '10px' }}>TARJETA</th>
+                    <th style={{ padding: '10px' }}>USUARIO</th>
                     <th style={{ padding: '10px' }}>CONCEPTO / DETALLE</th>
                     <th style={{ padding: '10px' }}>TIPO</th>
                     <th style={{ padding: '10px', textAlign: 'right' }}>VALOR</th>
@@ -307,6 +310,7 @@ export default function ReportDashboard() {
                       <tr key={tx.tra_id || tx.id} style={{ borderBottom: '1px solid #eee' }}>
                         <td style={{ padding: '10px' }}>{new Date(tx.tra_fecha || tx.fecha || tx.tra_created_at).toLocaleDateString()}</td>
                         <td style={{ padding: '10px' }}>{cardForTx.tar_alias || 'Tarjeta'} (****{cardForTx.tar_ultimos_digitos})</td>
+                        <td style={{ padding: '10px' }}>{tx.usuarios?.usu_nombre || 'Desconocido'}</td>
                         <td style={{ padding: '10px' }}>{tx.tra_detalle || tx.detalle} {tx.tra_es_diferido ? `(Dif. ${tx.tra_meses} meses)` : ''}</td>
                         <td style={{ padding: '10px' }}>{isIngreso ? 'ABONO' : 'CARGO'}</td>
                         <td style={{ padding: '10px', textAlign: 'right', fontWeight: 'bold', color: isIngreso ? '#10b981' : '#ef4444' }}>

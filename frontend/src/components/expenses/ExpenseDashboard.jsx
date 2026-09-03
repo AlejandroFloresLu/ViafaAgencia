@@ -382,7 +382,7 @@ export default function ExpenseDashboard() {
                <div className="validation-status">
                  {selectedCard && montoNum > 0 && !hasEnoughBalance && !txToEdit && (
                    <span style={{ color: '#f59e0b', fontWeight: 'bold', fontSize: '0.9rem' }}>
-                     ⚠️ Operación requiere sobregiro de ${(montoNum - selectedCard.saldo_disponible).toLocaleString('en-US', {minimumFractionDigits:2})}
+                     ⚠️ Operación requiere sobregiro de ${(montoNum - (selectedCard.tar_cupo_maximo - (selectedCard.tar_saldo_usado || 0))).toLocaleString('en-US', {minimumFractionDigits:2})}
                    </span>
                  )}
                </div>

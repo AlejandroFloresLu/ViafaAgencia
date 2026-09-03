@@ -18,7 +18,7 @@ class TransactionModel {
 
     let query = supabase
       .from('transacciones')
-      .select('*, tarjetas(tar_alias)', { count: 'exact' });
+      .select('*, tarjetas(tar_alias), usuarios(usu_nombre)', { count: 'exact' });
 
     // Aplicar filtros dinámicos (ej: por usu_id o tar_id)
     if (filters.usu_id) query = query.eq('usu_id', filters.usu_id);

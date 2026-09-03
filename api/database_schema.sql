@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS public.tarjetas (
     tar_dia_corte INTEGER,
     tar_cupo_maximo NUMERIC(12,2) DEFAULT 0.00 CHECK (tar_cupo_maximo >= 0),
     tar_saldo_usado NUMERIC(12,2) DEFAULT 0.00 CHECK (tar_saldo_usado >= 0),
-    tar_saldo_disponible NUMERIC(12,2) DEFAULT 0.00 CHECK (tar_saldo_disponible >= 0),
+    tar_saldo_disponible NUMERIC(12,2) DEFAULT 0.00,
     tar_permite_diferir BOOLEAN DEFAULT false,
     tar_estado TEXT DEFAULT 'ACT' CHECK (tar_estado IN ('ACT', 'DEC')), -- Estado
     tar_created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS public.estados_cuenta (
     est_mes INTEGER NOT NULL,
     est_cupo_maximo NUMERIC(12,2) NOT NULL CHECK (est_cupo_maximo >= 0),
     est_saldo_usado NUMERIC(12,2) NOT NULL CHECK (est_saldo_usado >= 0),
-    est_saldo_disponible NUMERIC(12,2) NOT NULL CHECK (est_saldo_disponible >= 0),
+    est_saldo_disponible NUMERIC(12,2) NOT NULL,
     est_total_gastado_mes NUMERIC(12,2) DEFAULT 0.00 CHECK (est_total_gastado_mes >= 0),
     est_total_pagado_mes NUMERIC(12,2) DEFAULT 0.00 CHECK (est_total_pagado_mes >= 0),
     est_created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
