@@ -23,6 +23,13 @@ class TransactionModel {
     // Aplicar filtros dinámicos (ej: por usu_id o tar_id)
     if (filters.usu_id) query = query.eq('usu_id', filters.usu_id);
     if (filters.tar_id) query = query.eq('tar_id', filters.tar_id);
+    
+    // Por defecto traer solo transacciones activas
+    if (filters.tra_estado) {
+      query = query.eq('tra_estado', filters.tra_estado);
+    } else {
+      query = query.eq('tra_estado', 'ACT');
+    }
 
     const { data, count, error } = await query
       .order('tra_created_at', { ascending: false })

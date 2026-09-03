@@ -10,7 +10,13 @@ class CardModel {
       .select('*', { count: 'exact' });
       
     if (filters.usu_id) query = query.eq('usu_id', filters.usu_id);
-    if (filters.tar_estado) query = query.eq('tar_estado', filters.tar_estado);
+    
+    // Por defecto solo traer tarjetas activas a menos que se pida otro estado
+    if (filters.tar_estado) {
+      query = query.eq('tar_estado', filters.tar_estado);
+    } else {
+      query = query.eq('tar_estado', 'ACT');
+    }
 
     const { data, count, error } = await query
       .order('tar_created_at', { ascending: false })
@@ -31,23 +37,6 @@ class CardModel {
     return data;
   }
 
-  // Nota: Ya no necesitamos updateBalance manual aquí si estamos usando Triggers 
-  // en la base de datos (actualizar_saldos_tarjeta), pero lo dejamos comentado por si acaso.
-  /*
-  static async updateBalance(cardId, newSaldoDisponible, newSaldoUsado) {
-    const { data, error } = await supabase
-      .from('tarjetas')
-      .update({ 
-        tar_saldo_disponible: newSaldoDisponible,
-        tar_saldo_usado: newSaldoUsado
-      })
-      .eq('tar_id', cardId)
-      .select()
-      .single();
-    if (error) throw error;
-    return data;
-  }
-  */
   static async updateCard(cardId, cardData) {
     const { data, error } = await supabase
       .from('tarjetas')
@@ -60,7 +49,7 @@ class CardModel {
   }
 
   static async deleteCard(cardId) {
-    // Borrado lógico
+    // Borrado lógico de tarjeta
     const { data, error } = await supabase
       .from('tarjetas')
       .update({ tar_estado: 'INA' })
@@ -68,6 +57,13 @@ class CardModel {
       .select()
       .single();
     if (error) throw error;
+
+    // Actualizar todas las transacciones asociadas a estado 'DEC'
+    await supabase
+      .from('transacciones')
+      .update({ tra_estado: 'DEC' })
+      .eq('tar_id', cardId);
+
     return data;
   }
 }
