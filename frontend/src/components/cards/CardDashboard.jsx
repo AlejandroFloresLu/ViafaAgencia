@@ -147,7 +147,9 @@ export default function CardDashboard() {
       <ConfirmModal 
         isOpen={isModalOpen}
         title="¿Eliminar Tarjeta?"
-        message={cardToDelete ? `Estás a punto de eliminar la tarjeta terminada en ${cardToDelete.numero?.slice(-4) || cardToDelete.ultimos_digitos}. Esta acción no se puede deshacer.` : ""}
+        message={cardToDelete ? `Estás a punto de eliminar la tarjeta terminada en ${cardToDelete.tar_ultimos_digitos}. Esta acción no se puede deshacer.` : ""}
+        type="danger"
+        confirmText="Eliminar Definitivamente"
         onConfirm={confirmDelete}
         onCancel={() => { setIsModalOpen(false); setCardToDelete(null); }}
       />

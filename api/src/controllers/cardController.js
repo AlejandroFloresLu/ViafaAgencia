@@ -50,3 +50,34 @@ exports.createCard = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.updateCard = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { alias, nombre, fechaExp, tipo, cupo, permite_diferir } = req.body;
+    
+    // No permitimos editar el número ni la franquicia
+    const cardData = {
+      tar_alias: alias,
+      tar_nombre_titular: nombre,
+      tar_fecha_expiracion: fechaExp,
+      tar_tipo: tipo,
+      tar_cupo_maximo: cupo || 0,
+      tar_permite_diferir: permite_diferir || false
+    };
+
+    const updatedCard = await CardModel.updateCard(id, cardData);
+    res.json(updatedCard);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.deleteCard = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCard = await CardModel.deleteCard(id);
+    res.json(deletedCard);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

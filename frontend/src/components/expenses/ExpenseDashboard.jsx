@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
 
 export default function ExpenseDashboard() {
-  const { user, isAdmin, isGestor, isAuxiliar } = useAuth();
+  const { user, isAdmin, isGestor, isAuxiliar, isLector } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -17,6 +17,7 @@ export default function ExpenseDashboard() {
   // States para "Nuevo Registro"
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [monto, setMonto] = useState('');
+  const [tipoOperacion, setTipoOperacion] = useState('gasto'); // 'gasto' o 'ingreso'
   const [diferido, setDiferido] = useState(false);
   const [meses, setMeses] = useState(3);
   const [detalle, setDetalle] = useState('');
@@ -58,6 +59,7 @@ export default function ExpenseDashboard() {
     if (txToEdit) {
       setSelectedCardId(txToEdit.tar_id);
       setMonto((txToEdit.tra_monto || txToEdit.monto || 0).toString());
+      setTipoOperacion(txToEdit.tra_tipo || txToEdit.tipo || 'gasto');
       setDetalle(txToEdit.tra_detalle || txToEdit.detalle || '');
       
       // Intentar extraer la fecha en formato YYYY-MM-DD
@@ -86,6 +88,7 @@ export default function ExpenseDashboard() {
 
   const resetForm = () => {
     setMonto('');
+    setTipoOperacion('gasto');
     setDetalle('');
     setDiferido(false);
     setMeses(3);
@@ -117,7 +120,7 @@ export default function ExpenseDashboard() {
     try {
       const payload = {
         tar_id: cardToUpdate.tar_id,
-        tipo: 'cargo', // Asumimos gastos en esta vista
+        tipo: tipoOperacion, // 'gasto' o 'ingreso'
         monto: montoNum,
         detalle: detalle,
         fecha: fecha,
@@ -280,7 +283,24 @@ export default function ExpenseDashboard() {
           <div className="expense-form-container">
             {error && <div className="alert error-alert">{error}</div>}
             
-            <div className="form-row flex justify-between">
+            <div className="form-row flex justify-between" style={{ gap: '1.5rem', marginBottom: '1rem' }}>
+              {/* Ocultar selector de Ingreso/Gasto para Auxiliares */}
+              {!(isAuxiliar && isAuxiliar()) && (
+                <div className="form-group flex-1">
+                  <label>Tipo de Operación</label>
+                  <select 
+                    className="form-control"
+                    value={tipoOperacion}
+                    onChange={(e) => {
+                      setTipoOperacion(e.target.value);
+                      if (e.target.value === 'ingreso') setDiferido(false);
+                    }}
+                  >
+                    <option value="gasto">Gasto (Cargo)</option>
+                    <option value="ingreso">Ingreso (Abono/Pago)</option>
+                  </select>
+                </div>
+              )}
               <div className="form-group flex-1">
                 <label>Monto Total ($)</label>
                 <input 
@@ -320,21 +340,24 @@ export default function ExpenseDashboard() {
               </div>
             </div>
 
-            <div className="form-group checkbox-group flex items-center">
-              <input 
-                type="checkbox" 
-                id="diferido" 
-                checked={diferido && selectedCard?.permite_diferir} 
-                onChange={(e) => setDiferido(e.target.checked)} 
-                disabled={!selectedCard?.permite_diferir}
-              />
-              <label htmlFor="diferido" style={{ margin: 0, marginLeft: '8px', cursor: !selectedCard?.permite_diferir ? 'not-allowed' : 'pointer', color: !selectedCard?.permite_diferir ? 'var(--text-muted)' : 'var(--text-color)' }}>
-                Diferir pago (Cuotas)
-              </label>
-              {!selectedCard?.permite_diferir && (
-                <span style={{ marginLeft: '10px', fontSize: '0.8rem', color: '#f59e0b' }}>(Solo corriente)</span>
-              )}
-            </div>
+            {/* Ocultar Diferir pago si es un ingreso (pago de tarjeta) */}
+            {tipoOperacion === 'gasto' && (
+              <div className="form-group checkbox-group flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="diferido" 
+                  checked={diferido && selectedCard?.permite_diferir} 
+                  onChange={(e) => setDiferido(e.target.checked)} 
+                  disabled={!selectedCard?.permite_diferir}
+                />
+                <label htmlFor="diferido" style={{ margin: 0, marginLeft: '8px', cursor: !selectedCard?.permite_diferir ? 'not-allowed' : 'pointer', color: !selectedCard?.permite_diferir ? 'var(--text-muted)' : 'var(--text-color)' }}>
+                  Diferir pago (Cuotas)
+                </label>
+                {!selectedCard?.permite_diferir && (
+                  <span style={{ marginLeft: '10px', fontSize: '0.8rem', color: '#f59e0b' }}>(Solo corriente)</span>
+                )}
+              </div>
+            )}
 
             {diferido && (
               <div className="deferred-options flex items-center justify-between">

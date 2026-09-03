@@ -48,6 +48,28 @@ class CardModel {
     return data;
   }
   */
+  static async updateCard(cardId, cardData) {
+    const { data, error } = await supabase
+      .from('tarjetas')
+      .update(cardData)
+      .eq('tar_id', cardId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  static async deleteCard(cardId) {
+    // Borrado lógico
+    const { data, error } = await supabase
+      .from('tarjetas')
+      .update({ tar_estado: 'INA' })
+      .eq('tar_id', cardId)
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  }
 }
 
 module.exports = CardModel;

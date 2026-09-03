@@ -10,6 +10,7 @@ import './App.css';
 import CardDashboard from './components/cards/CardDashboard';
 import BalanceDashboard from './components/balances/BalanceDashboard';
 import SettingsDashboard from './components/settings/SettingsDashboard';
+import ReportDashboard from './components/reports/ReportDashboard';
 
 const ProtectedRoute = ({ children, minLevel }) => {
   const { user, loading, hasAccess } = useAuth();
@@ -76,6 +77,17 @@ function AppRoutes() {
           <ProtectedRoute minLevel={4}>
             <AppLayout>
               <SettingsDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        } 
+      />
+
+      <Route 
+        path="/reports" 
+        element={
+          <ProtectedRoute minLevel={4}>
+            <AppLayout>
+              <ReportDashboard />
             </AppLayout>
           </ProtectedRoute>
         } 

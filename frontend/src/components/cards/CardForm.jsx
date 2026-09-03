@@ -64,13 +64,14 @@ export default function CardForm({ cardData, setCardData, handleSave, handleCanc
             type="text" 
             name="numero" 
             className="form-control" 
-            placeholder="**** **** **** ****"
-            value={cardData.numero} 
+            placeholder={cardData.tar_id ? `Termina en ${cardData.tar_ultimos_digitos || '****'}` : "**** **** **** ****"}
+            value={cardData.numero || ''} 
             onChange={handleChange} 
             maxLength={19}
             autoComplete="new-password"
             spellCheck="false"
             data-lpignore="true"
+            disabled={!!cardData.tar_id}
           />
         </div>
         

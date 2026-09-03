@@ -13,8 +13,10 @@ router.get('/', requireRoleLevel([1, 2, 3, 4]), cardController.getCards);
 // Auxiliar y superior (Nivel 1, 2, 3)
 router.post('/', requireRoleLevel([1, 2, 3]), cardController.createCard);
 
-// Futuras implementaciones (PUT para nivel 1 y 2, DELETE para nivel 1)
-// router.put('/:id', requireRoleLevel([1, 2]), cardController.updateCard);
-// router.delete('/:id', requireRoleLevel([1]), cardController.deleteCard);
+// Administrador, Gerente, Auditor
+router.put('/:id', requireRoleLevel([1, 2, 4]), cardController.updateCard);
+
+// Solo Super Administrador
+router.delete('/:id', requireRoleLevel([1]), cardController.deleteCard);
 
 module.exports = router;

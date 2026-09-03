@@ -27,6 +27,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             <h3>OPERACIONES</h3>
             <ul>
               <li><NavLink to="/expenses" onClick={() => setIsOpen(false)}>Registro de Operaciones</NavLink></li>
+              <li><NavLink to="/reports" onClick={() => setIsOpen(false)}>Estado de Cuenta (Reportes)</NavLink></li>
             </ul>
           </div>
 
