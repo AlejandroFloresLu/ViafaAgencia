@@ -42,9 +42,7 @@ export default function ExpenseDashboard() {
         
         setCards(cardsData);
         setTransactions(txsData);
-        if (cardsData.length > 0) {
-          setSelectedCardId(cardsData[0].tar_id);
-        }
+        // No auto-seleccionar tarjeta para forzar el flujo intuitivo
       } catch (err) {
         setError('Error cargando datos: ' + err.message);
       } finally {
@@ -170,7 +168,7 @@ export default function ExpenseDashboard() {
       <div className="expenses-grid" style={{ paddingTop: 0 }}>
         {/* Selector de Tarjetas */}
         <div className="expenses-left">
-          <h3 style={{ borderBottom: 'none', marginBottom: '1rem' }}>Selecciona Tarjeta de Origen</h3>
+          <h3 style={{ borderBottom: 'none', marginBottom: '1rem' }}>Cartera de Tarjetas</h3>
           
           <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
             <span style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', fontSize: '1.1rem' }}>🔍</span>
@@ -270,7 +268,12 @@ export default function ExpenseDashboard() {
         </div>
 
         {/* Formulario */}
-        <div className="expenses-right">
+        <div className="expenses-right" style={{ 
+          opacity: selectedCardId ? 1 : 0.4, 
+          filter: selectedCardId ? 'none' : 'grayscale(80%)',
+          pointerEvents: selectedCardId ? 'auto' : 'none',
+          transition: 'all 0.3s ease-in-out'
+        }}>
            <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
              <h3 style={{ borderBottom: 'none', margin: 0, padding: 0 }}>Datos de la Transacción</h3>
              {txToEdit && (

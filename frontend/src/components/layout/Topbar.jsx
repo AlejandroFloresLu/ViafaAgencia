@@ -42,15 +42,6 @@ export default function Topbar({ toggleSidebar }) {
       </div>
 
       <div className="topbar-actions">
-        {/* Botón de alternar tema Claro/Oscuro */}
-        <button className="icon-btn" onClick={toggleTheme} aria-label="Cambiar Tema" title="Cambiar Tema">
-          {isLightMode ? '🌙' : '☀️'}
-        </button>
-
-        <button className="icon-btn" aria-label="Notificaciones">
-          🔔
-          <span className="badge">2</span>
-        </button>
         
         <div className="user-profile">
           <div className="avatar">{user?.nombre?.substring(0, 2).toUpperCase() || 'AD'}</div>
