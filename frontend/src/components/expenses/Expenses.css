@@ -19,12 +19,28 @@
 
 /* Selector de Tarjetas */
 .card-selector-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: 1.5rem;
+  padding-bottom: 15px; /* Para el scrollbar */
+  scroll-snap-type: x mandatory;
+}
+
+.card-selector-list::-webkit-scrollbar {
+  height: 8px;
+}
+.card-selector-list::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+.card-selector-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
 }
 
 .card-selector-item {
+  flex: 0 0 320px; /* Ancho fijo para mantener la forma en el carril */
+  scroll-snap-align: start;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
@@ -247,7 +263,7 @@
 
 .type-btn {
   flex: 1;
-  padding: 12px;
+  padding: 10px;
   border: none;
   background: transparent;
   border-radius: 8px;
@@ -255,7 +271,7 @@
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .type-btn.active-gasto {
@@ -272,33 +288,35 @@
 
 .amount-group {
   position: relative;
-  margin: 1.5rem 0;
+  margin: 1.2rem 0;
   background: var(--glass-bg);
   border: 2px dashed var(--glass-border);
-  border-radius: 16px;
-  padding: 1.5rem;
+  border-radius: 12px;
+  padding: 1rem;
   text-align: center;
 }
 
 .amount-group .currency-symbol {
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2rem;
+  font-weight: 700;
   color: var(--text-muted);
   position: absolute;
   left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .amount-input-massive {
   width: 100%;
-  font-size: 3.5rem !important;
-  font-weight: 800 !important;
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
   text-align: center;
   background: transparent;
   border: none !important;
   color: var(--text-color);
   outline: none;
   padding: 0;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .amount-input-massive:focus {
@@ -310,7 +328,8 @@
 }
 
 .pill-btn {
-  padding: 8px 16px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
   border-radius: 20px;
   border: 1px solid var(--glass-border);
   background: transparent;
@@ -331,11 +350,11 @@
 }
 
 .btn-massive {
-  padding: 1.25rem !important;
-  font-size: 1.2rem !important;
+  padding: 1rem !important;
+  font-size: 1.1rem !important;
   font-weight: bold !important;
-  border-radius: 12px !important;
+  border-radius: 10px !important;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
