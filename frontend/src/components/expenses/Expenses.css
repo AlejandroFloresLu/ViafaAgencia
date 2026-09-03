@@ -252,79 +252,106 @@
   color: var(--danger);
 }
 
-/* Rediseño de Formulario - UI Rápida */
-.type-toggle-group {
+/* Formulario Rediseño (Tabs y Underline) */
+.form-tabs {
   display: flex;
-  gap: 0.5rem;
-  background: var(--glass-border);
-  padding: 4px;
-  border-radius: 12px;
+  margin-bottom: -1px; /* Para ocultar el borde inferior sobre el contenedor */
+  position: relative;
+  z-index: 1;
 }
 
-.type-btn {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: transparent;
-  border-radius: 8px;
-  font-weight: 600;
-  color: var(--text-muted);
+.form-tab-btn {
+  padding: 12px 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
   cursor: pointer;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-right: 4px;
   transition: all 0.2s;
   font-size: 0.95rem;
 }
 
-.type-btn.active-gasto {
-  background: white;
-  color: #ef4444;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.form-tab-btn:hover {
+  color: var(--text-color);
 }
 
-.type-btn.active-ingreso {
-  background: white;
-  color: #10b981;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.form-tab-btn.active {
+  background: white; 
+  color: #c01b22; /* Color primario o de acción para resaltar */
+  border-bottom: 2px solid white; 
 }
 
-.amount-group {
+.expense-form-container.has-tabs {
+  border-top-left-radius: 0;
+}
+
+.amount-group-underline {
   position: relative;
-  margin: 1.2rem 0;
-  background: var(--glass-bg);
-  border: 2px dashed var(--glass-border);
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
+  margin: 1.5rem 0 2rem 0;
 }
 
-.amount-group .currency-symbol {
-  font-size: 2rem;
+.amount-group-underline .currency-symbol {
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--text-muted);
   position: absolute;
-  left: 2rem;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.amount-input-massive {
+.amount-input-massive-underline {
   width: 100%;
-  font-size: 2.2rem !important;
+  font-size: 2.8rem !important;
   font-weight: 700 !important;
   text-align: center;
   background: transparent;
   border: none !important;
+  border-bottom: 2px solid var(--text-color) !important;
+  border-radius: 0 !important;
   color: var(--text-color);
   outline: none;
-  padding: 0;
+  padding: 10px 0;
   line-height: 1.2;
 }
 
-.amount-input-massive:focus {
+.amount-input-massive-underline:focus {
+  border-bottom-color: var(--primary) !important;
   box-shadow: none !important;
 }
 
-.amount-input-massive::placeholder {
-  color: rgba(0,0,0,0.2);
+.stacked-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group-underline label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.underline-input {
+  width: 100%;
+  border: none !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  background: transparent !important;
+  padding: 8px 0 !important;
+  border-radius: 0 !important;
+  font-size: 1.05rem;
+  color: var(--text-color);
+  outline: none;
+}
+
+.underline-input:focus {
+  border-bottom-color: var(--primary) !important;
+  box-shadow: none !important;
 }
 
 .pill-btn {

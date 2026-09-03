@@ -282,33 +282,33 @@ export default function ExpenseDashboard() {
              )}
           </div>
 
-          <div className="expense-form-container">
+          {/* TIPO DE OPERACION (Tabs tipo Carpeta) */}
+          {!(isAuxiliar && isAuxiliar()) && (
+            <div className="form-tabs">
+              <button 
+                className={`form-tab-btn ${tipoOperacion === 'gasto' ? 'active' : ''}`}
+                onClick={() => setTipoOperacion('gasto')}
+              >
+                Gasto / Cargo
+              </button>
+              <button 
+                className={`form-tab-btn ${tipoOperacion === 'ingreso' ? 'active' : ''}`}
+                onClick={() => { setTipoOperacion('ingreso'); setDiferido(false); }}
+              >
+                Ingreso / Abono
+              </button>
+            </div>
+          )}
+
+          <div className={`expense-form-container ${!(isAuxiliar && isAuxiliar()) ? 'has-tabs' : ''}`}>
             {error && <div className="alert error-alert">{error}</div>}
-            
-            {/* TIPO DE OPERACION (Botones tipo Toggle) */}
-            {!(isAuxiliar && isAuxiliar()) && (
-              <div className="type-toggle-group mb-2">
-                <button 
-                  className={`type-btn ${tipoOperacion === 'gasto' ? 'active-gasto' : ''}`}
-                  onClick={() => setTipoOperacion('gasto')}
-                >
-                  🔴 Gasto / Cargo
-                </button>
-                <button 
-                  className={`type-btn ${tipoOperacion === 'ingreso' ? 'active-ingreso' : ''}`}
-                  onClick={() => { setTipoOperacion('ingreso'); setDiferido(false); }}
-                >
-                  🟢 Ingreso / Abono
-                </button>
-              </div>
-            )}
 
             {/* MONTO GIGANTE */}
-            <div className="amount-group">
+            <div className="amount-group-underline">
               <span className="currency-symbol">$</span>
               <input 
                 type="number" 
-                className="form-control amount-input-massive" 
+                className="form-control amount-input-massive-underline" 
                 placeholder="0.00" 
                 value={monto} 
                 onChange={(e) => setMonto(e.target.value)} 
@@ -316,23 +316,23 @@ export default function ExpenseDashboard() {
               />
             </div>
 
-            {/* CONCEPTO Y FECHA */}
-            <div className="form-row flex justify-between" style={{ gap: '1.5rem', marginBottom: '1.5rem' }}>
-              <div className="form-group flex-1" style={{ flex: 2 }}>
-                 <label>Concepto / Detalle</label>
+            {/* CONCEPTO Y FECHA (Apilados verticalmente) */}
+            <div className="stacked-fields">
+              <div className="form-group-underline">
+                 <label>Concepto</label>
                  <input 
                    type="text" 
-                   className="form-control" 
-                   placeholder="Ej. Compra insumos" 
+                   className="form-control underline-input" 
+                   placeholder="Ej. Compra de insumos" 
                    value={detalle} 
                    onChange={(e) => setDetalle(e.target.value)} 
                  />
               </div>
-              <div className="form-group flex-1" style={{ flex: 1 }}>
+              <div className="form-group-underline">
                  <label>Fecha</label>
                  <input 
                    type="date" 
-                   className="form-control" 
+                   className="form-control underline-input" 
                    value={fecha} 
                    onChange={(e) => setFecha(e.target.value)} 
                  />
@@ -341,7 +341,7 @@ export default function ExpenseDashboard() {
 
             {/* OPCIONES DE PAGO DIFERIDO */}
             {tipoOperacion === 'gasto' && selectedCard?.permite_diferir && (
-              <div className="payment-mode-group" style={{ marginBottom: '1.5rem' }}>
+              <div className="payment-mode-group" style={{ marginBottom: '1.5rem', marginTop: '1.5rem' }}>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Modalidad de Pago</label>
                 <div className="flex" style={{ gap: '0.5rem', marginBottom: diferido ? '1rem' : '0' }}>
                    <button className={`pill-btn ${!diferido ? 'active' : ''}`} onClick={() => setDiferido(false)}>Corriente</button>
@@ -365,7 +365,7 @@ export default function ExpenseDashboard() {
             )}
 
             {/* ADVERTENCIA DE SOBREGIRO */}
-            <div className="validation-status" style={{ minHeight: '24px', marginBottom: '1rem', textAlign: 'center' }}>
+            <div className="validation-status" style={{ minHeight: '24px', marginBottom: '1.5rem', textAlign: 'center' }}>
               {selectedCard && montoNum > 0 && !hasEnoughBalance && !txToEdit && (
                 <span style={{ color: '#ef4444', fontWeight: 'bold', fontSize: '0.9rem', background: 'rgba(239, 68, 68, 0.1)', padding: '8px 12px', borderRadius: '8px', display: 'inline-block' }}>
                   ⚠️ Esta operación requiere un sobregiro de ${(montoNum - (selectedCard.tar_cupo_maximo - (selectedCard.tar_saldo_usado || 0))).toLocaleString('en-US', {minimumFractionDigits:2})}
@@ -373,9 +373,9 @@ export default function ExpenseDashboard() {
               )}
             </div>
 
-            {/* BOTÓN PRINCIPAL (MASIVO) */}
-            <button className="btn btn-primary btn-massive w-full" style={{ width: '100%' }} onClick={handleSave} disabled={montoNum <= 0}>
-              {txToEdit ? '💾 Guardar Cambios' : '🚀 Registrar Operación'}
+            {/* BOTÓN PRINCIPAL A TODO ANCHO */}
+            <button className="btn btn-primary btn-massive w-full" style={{ width: '100%', borderRadius: '8px' }} onClick={handleSave} disabled={montoNum <= 0}>
+              {txToEdit ? 'Guardar Cambios' : 'Registrar Operación'}
             </button>
           </div>
         </div>
