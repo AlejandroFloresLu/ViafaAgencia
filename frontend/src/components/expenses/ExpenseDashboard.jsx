@@ -321,7 +321,7 @@ export default function ExpenseDashboard() {
                   }
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === '-' || e.key === 'e') {
+                  if (e.key === '-') {
                     e.preventDefault();
                   }
                 }}
