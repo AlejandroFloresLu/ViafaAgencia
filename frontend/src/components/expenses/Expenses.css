@@ -103,7 +103,7 @@
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
-  padding: 2.5rem;
+  padding: 1.5rem;
 }
 
 .form-row {
@@ -290,11 +290,11 @@
 
 .amount-group-underline {
   position: relative;
-  margin: 1.5rem 0 2rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .amount-group-underline .currency-symbol {
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-muted);
   position: absolute;
@@ -305,7 +305,7 @@
 
 .amount-input-massive-underline {
   width: 100%;
-  font-size: 2.8rem !important;
+  font-size: 2rem !important;
   font-weight: 700 !important;
   text-align: center;
   background: transparent;
@@ -314,7 +314,7 @@
   border-radius: 0 !important;
   color: var(--text-color);
   outline: none;
-  padding: 10px 0;
+  padding: 5px 0;
   line-height: 1.2;
 }
 
@@ -326,7 +326,7 @@
 .stacked-fields {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .form-group-underline label {
@@ -342,9 +342,9 @@
   border: none !important;
   border-bottom: 1px solid var(--glass-border) !important;
   background: transparent !important;
-  padding: 8px 0 !important;
+  padding: 6px 0 !important;
   border-radius: 0 !important;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-color);
   outline: none;
 }
@@ -377,8 +377,8 @@
 }
 
 .btn-massive {
-  padding: 1rem !important;
-  font-size: 1.1rem !important;
+  padding: 0.8rem !important;
+  font-size: 1rem !important;
   font-weight: bold !important;
   border-radius: 10px !important;
   text-transform: uppercase;

@@ -271,9 +271,12 @@ export default function ExpenseDashboard() {
           opacity: selectedCardId ? 1 : 0.4, 
           filter: selectedCardId ? 'none' : 'grayscale(80%)',
           pointerEvents: selectedCardId ? 'auto' : 'none',
-          transition: 'all 0.3s ease-in-out'
+          transition: 'all 0.3s ease-in-out',
+          maxWidth: '700px',
+          margin: '0 auto',
+          width: '100%'
         }}>
-           <div className="flex justify-between items-center" style={{ marginBottom: '1.5rem' }}>
+           <div className="flex justify-between items-center" style={{ marginBottom: '1rem' }}>
              <h3 style={{ borderBottom: 'none', margin: 0, padding: 0 }}>Datos de la Transacción</h3>
              {txToEdit && (
                <button className="btn btn-secondary" onClick={resetForm} style={{ padding: '4px 12px', fontSize: '0.8rem' }}>
