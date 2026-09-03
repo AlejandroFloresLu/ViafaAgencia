@@ -15,31 +15,36 @@ export default function TransactionHistory({ cards, setCards, transactions, setT
     setIsTxModalOpen(true);
   };
 
-  const confirmDeleteTx = () => {
+  const confirmDeleteTx = async () => {
     if (txToDelete) {
-      const updatedCards = cards.map(c => {
-        if (c.id === txToDelete.cardId) {
-          return {
-            ...c,
-            saldo_usado: (c.saldo_usado || 0) - txToDelete.monto,
-            saldo_disponible: (c.saldo_disponible || 0) + txToDelete.monto
-          };
-        }
-        return c;
-      });
-      setCards(updatedCards);
-      setTransactions(transactions.filter(t => t.id !== txToDelete.id));
-      setSuccessMsg('Gasto eliminado y fondos devueltos.');
-      setTimeout(() => setSuccessMsg(''), 4000);
+      try {
+        await apiClient(`/transactions/${txToDelete.tra_id || txToDelete.id}`, { method: 'DELETE' });
+        // Recargar datos desde el servidor
+        const [cardsRes, txsRes] = await Promise.all([
+          apiClient('/cards'),
+          apiClient('/transactions')
+        ]);
+        setCards(cardsRes.data || cardsRes || []);
+        setTransactions(txsRes.data || txsRes || []);
+        setSuccessMsg('Operación eliminada con éxito.');
+        setTimeout(() => setSuccessMsg(''), 4000);
+      } catch (err) {
+        console.error('Error eliminando transacción:', err);
+        alert('Error eliminando transacción: ' + err.message);
+      }
     }
     setIsTxModalOpen(false);
     setTxToDelete(null);
   };
 
   const filteredTransactions = transactions.filter(t => {
-    if (t.cardId !== historyCardId) return false;
+    // Si la transacción no pertenece a la tarjeta, ignorarla
+    if ((t.tar_id || t.cardId) !== historyCardId) return false;
+    
+    // Si hay texto de búsqueda, filtrar por el detalle
     if (searchTerm) {
-      return t.detalle.toLowerCase().includes(searchTerm.toLowerCase());
+      const detalle = t.tra_detalle || t.detalle || '';
+      return detalle.toLowerCase().includes(searchTerm.toLowerCase());
     }
     return true;
   });
@@ -70,9 +75,8 @@ export default function TransactionHistory({ cards, setCards, transactions, setT
 
         {successMsg && <div style={{ background: '#d4edda', color: '#155724', padding: '10px 15px', borderRadius: '8px', marginBottom: '20px' }}>{successMsg}</div>}
 
-        {/* Controles: Diseño idéntico a la Imagen 1 pero solo con el Buscador */}
+        {/* Controles: Buscador */}
         <div className="flex justify-center" style={{ marginBottom: '30px' }}>
-          
           <div style={{ width: '100%', maxWidth: '500px' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', color: '#666', fontWeight: 'bold', marginBottom: '8px', letterSpacing: '0.5px' }}>
               BUSCAR EN ESTA TARJETA:
@@ -105,19 +109,21 @@ export default function TransactionHistory({ cards, setCards, transactions, setT
             <p style={{ color: '#888', textAlign: 'center', padding: '20px 0', margin: 0 }}>No hay movimientos para mostrar.</p>
           ) : (
             filteredTransactions.map(tx => (
-              <div key={tx.id} className="flex justify-between items-center" style={{ background: '#fff', border: '1px solid #eee', padding: '20px', borderRadius: '10px', marginBottom: '15px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)', gap: '15px' }}>
+              <div key={tx.tra_id || tx.id} className="flex justify-between items-center" style={{ background: '#fff', border: '1px solid #eee', padding: '20px', borderRadius: '10px', marginBottom: '15px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)', gap: '15px' }}>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', flex: '1' }}>
-                  <span style={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}>{tx.detalle}</span>
-                  <span style={{ color: '#888', fontSize: '0.85rem' }}>{tx.date} • {tx.tipo} • Autor: {tx.autor}</span>
+                  <span style={{ color: '#333', fontWeight: 'bold', fontSize: '1.1rem' }}>{tx.tra_detalle || tx.detalle}</span>
+                  <span style={{ color: '#888', fontSize: '0.85rem' }}>
+                    {tx.tra_fecha ? new Date(tx.tra_fecha).toLocaleDateString() : (tx.date || 'Sin fecha')} • 
+                    {tx.tra_es_diferido ? ` Diferido (${tx.tra_meses} meses)` : (tx.tra_tipo || tx.tipo || 'Corriente')}
+                  </span>
                 </div>
 
                 <div className="text-right" style={{ minWidth: '150px' }}>
                   <div style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#333', marginBottom: '10px' }}>
-                    -${tx.monto.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    -${Number(tx.tra_monto || tx.monto).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </div>
                   
-                  {/* Controles: Diseño idéntico a la Imagen 2 */}
                   {userRole === 'Gerente' && (
                     <div className="flex justify-end" style={{ gap: '15px' }}>
                       <button 

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './Expenses.css';
 import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
 
 export default function ExpenseDashboard() {
   const { user, isAdmin, isGestor, isAuxiliar } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   
   // States para Datos Reales
   const [cards, setCards] = useState([]);
   const [transactions, setTransactions] = useState([]);
-  const [txToEdit, setTxToEdit] = useState(null);
+  const [txToEdit, setTxToEdit] = useState(location.state?.txToEdit || null);
   
   // States para "Nuevo Registro"
   const [selectedCardId, setSelectedCardId] = useState(null);
@@ -54,19 +57,21 @@ export default function ExpenseDashboard() {
   useEffect(() => {
     if (txToEdit) {
       setSelectedCardId(txToEdit.tar_id);
-      setMonto(txToEdit.monto.toString());
-      setDetalle(txToEdit.detalle);
+      setMonto((txToEdit.tra_monto || txToEdit.monto || 0).toString());
+      setDetalle(txToEdit.tra_detalle || txToEdit.detalle || '');
       
       // Intentar extraer la fecha en formato YYYY-MM-DD
-      const fechaParseada = new Date(txToEdit.date);
-      if (!isNaN(fechaParseada.getTime())) {
-        setFecha(fechaParseada.toISOString().split('T')[0]);
+      const fechaBase = txToEdit.tra_fecha || txToEdit.date;
+      if (fechaBase) {
+        const fechaParseada = new Date(fechaBase);
+        if (!isNaN(fechaParseada.getTime())) {
+          setFecha(fechaParseada.toISOString().split('T')[0]);
+        }
       }
 
-      if (txToEdit.tipo.includes('Diferido')) {
+      if (txToEdit.tra_es_diferido || (txToEdit.tipo && txToEdit.tipo.includes('Diferido'))) {
         setDiferido(true);
-        const m = parseInt(txToEdit.tipo.replace(/[^0-9]/g, '')) || 3;
-        setMeses(m);
+        setMeses(txToEdit.tra_meses || (txToEdit.tipo ? parseInt(txToEdit.tipo.replace(/[^0-9]/g, '')) : 3) || 3);
       } else {
         setDiferido(false);
       }
@@ -77,7 +82,7 @@ export default function ExpenseDashboard() {
   const montoNum = parseFloat(monto) || 0;
   
   const cuota = diferido && meses > 0 ? (montoNum / meses).toFixed(2) : montoNum.toFixed(2);
-  const hasEnoughBalance = selectedCard ? (selectedCard.tar_limite_credito - (selectedCard.tar_saldo_usado || 0)) >= montoNum : false;
+  const hasEnoughBalance = selectedCard ? (selectedCard.tar_cupo_maximo - (selectedCard.tar_saldo_usado || 0)) >= montoNum : false;
 
   const resetForm = () => {
     setMonto('');
@@ -87,6 +92,7 @@ export default function ExpenseDashboard() {
     setFecha(new Date().toISOString().split('T')[0]);
     if (setTxToEdit) setTxToEdit(null);
     setError('');
+    navigate(location.pathname, { replace: true, state: {} });
   };
 
   const handleSave = async () => {
@@ -111,13 +117,13 @@ export default function ExpenseDashboard() {
     try {
       const payload = {
         tar_id: cardToUpdate.tar_id,
-        tra_tipo: 'cargo', // Asumimos gastos en esta vista
-        tra_monto: montoNum,
-        tra_detalle: detalle,
-        tra_fecha: fecha,
+        tipo: 'cargo', // Asumimos gastos en esta vista
+        monto: montoNum,
+        detalle: detalle,
+        fecha: fecha,
         es_diferido: diferido,
         meses: diferido ? meses : 1,
-        tra_cuota: parseFloat(cuota)
+        cuota: parseFloat(cuota)
       };
 
       if (txToEdit) {
@@ -220,35 +226,35 @@ export default function ExpenseDashboard() {
                   <div className="flex justify-between items-center" style={{ marginTop: '0.5rem' }}>
                     <span className="avail-label">Disponible:</span>
                     <div style={{ textAlign: 'right' }}>
-                      {(card.tar_limite_credito - (card.tar_saldo_usado || 0)) < 0 ? (
+                      {(card.tar_cupo_maximo - (card.tar_saldo_usado || 0)) < 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                           <span style={{ fontWeight: 'bold', color: '#f59e0b', fontSize: '1rem', textDecoration: 'line-through', opacity: 0.7 }}>$0.00</span>
                           <span style={{ color: '#ef4444', fontSize: '0.8rem', fontWeight: 'bold', marginTop: '2px', background: 'rgba(239, 68, 68, 0.1)', padding: '2px 6px', borderRadius: '4px' }}>
-                            Sobregiro: ${Math.abs(card.tar_limite_credito - (card.tar_saldo_usado || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            Sobregiro: ${Math.abs(card.tar_cupo_maximo - (card.tar_saldo_usado || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </span>
                         </div>
                       ) : (
                         <span style={{ fontWeight: 'bold', color: '#10b981', fontSize: '1rem' }}>
-                          ${(card.tar_limite_credito - (card.tar_saldo_usado || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          ${(card.tar_cupo_maximo - (card.tar_saldo_usado || 0)).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </span>
                       )}
                     </div>
                   </div>
                   
-                  {card.tar_limite_credito && (
+                  {card.tar_cupo_maximo && (
                     <div style={{ marginTop: '12px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '4px' }}>
                         <span>Cupo Usado</span>
-                        <span>${card.tar_limite_credito.toLocaleString('en-US')}</span>
+                        <span>${card.tar_cupo_maximo.toLocaleString('en-US')}</span>
                       </div>
                       <div style={{ height: '6px', width: '100%', background: 'rgba(0,0,0,0.1)', borderRadius: '3px', overflow: 'hidden', display: 'flex' }}>
                         <div style={{ 
                           height: '100%', 
-                          width: `${Math.min(100, ((card.tar_saldo_usado || 0) / card.tar_limite_credito) * 100)}%`, 
-                          background: (card.tar_limite_credito - (card.tar_saldo_usado || 0)) < 0 ? '#ef4444' : '#3b82f6',
+                          width: `${Math.min(100, ((card.tar_saldo_usado || 0) / card.tar_cupo_maximo) * 100)}%`, 
+                          background: (card.tar_cupo_maximo - (card.tar_saldo_usado || 0)) < 0 ? '#ef4444' : '#3b82f6',
                           transition: 'width 0.3s ease'
                         }} />
-                        {(card.tar_limite_credito - (card.tar_saldo_usado || 0)) < 0 && (
+                        {(card.tar_cupo_maximo - (card.tar_saldo_usado || 0)) < 0 && (
                           <div style={{ height: '100%', flex: 1, background: '#ef4444', opacity: 0.5 }} />
                         )}
                       </div>
