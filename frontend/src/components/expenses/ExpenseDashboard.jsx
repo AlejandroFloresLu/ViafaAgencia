@@ -314,7 +314,17 @@ export default function ExpenseDashboard() {
                 className="form-control amount-input-massive-underline" 
                 placeholder="0.00" 
                 value={monto} 
-                onChange={(e) => setMonto(e.target.value)} 
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val === '' || Number(val) >= 0) {
+                    setMonto(val);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === '-' || e.key === 'e') {
+                    e.preventDefault();
+                  }
+                }}
                 min="0" step="0.01"
               />
             </div>
